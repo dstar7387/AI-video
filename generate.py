@@ -84,12 +84,28 @@ def generatex():
 
     video_clip = VideoFileClip("memory.mp4")
 
-    background_audio_clip = AudioFileClip(background_audio_path)
-    speech_audio_clip = AudioFileClip(speech_audio_path)   
-
     video_duration = video_clip.duration
-    background_audio_duration = background_audio_clip.duration
-    speech_audio_duration = speech_audio_clip.duration
+    
+    if background_audio_path and speech_audio_path:
+        background_audio_clip = AudioFileClip(background_audio_path)
+        speech_audio_clip = AudioFileClip(speech_audio_path)   
+        background_audio_duration = background_audio_clip.duration
+        speech_audio_duration = speech_audio_clip.duration
+
+        if video_duration < speech_audio_duration:
+            adjusted_speech_audio = crop_audio(speech_audio_clip, video_duration)
+        else:
+            adjusted_speech_audio = speech_audio_clip.subclip(0, video_duration)
+
+        if video_duration > background_audio_duration:
+            adjusted_background_audio = repeat_audio(background_audio_clip, video_duration)
+        else:
+            adjusted_background_audio = background_audio_clip.subclip(0, video_duration)
+
+        final_audio = CompositeAudioClip([adjusted_background_audio.volumex(3.0), adjusted_speech_audio.volumex(0.1)])
+        final_clip = video_clip.set_audio(final_audio)
+    else:
+        final_clip = video_clip
 
     if video_duration < speech_audio_duration:
         adjusted_speech_audio = crop_audio(speech_audio_clip, video_duration)
