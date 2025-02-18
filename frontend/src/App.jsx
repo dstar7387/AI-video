@@ -20,8 +20,8 @@ function App() {
     }
 
     try {
-      await axios.post('http://localhost:5000/upload', formData);
-      const response = await axios.get('http://localhost:5000/images');
+      await axios.post('/api/upload', formData);
+      const response = await axios.get('/api/images');
       setImages(response.data);
     } catch (error) {
       setMessage('Error uploading images');
@@ -35,7 +35,7 @@ function App() {
     formData.append('background', backgroundInputRef.current.files[0]);
 
     try {
-      const response = await axios.post('http://localhost:5000/generate', formData);
+      const response = await axios.post('/api/generate', formData);
       window.location.href = '/result';
     } catch (error) {
       setMessage('Error generating slideshow');
@@ -44,7 +44,7 @@ function App() {
 
   const handleDelete = async (image) => {
     try {
-      await axios.get(`http://localhost:5000/delete/${image}`);
+      await axios.get(`/api/delete/${image}`);
       setImages(images.filter(img => img !== image));
     } catch (error) {
       setMessage('Error deleting image');
@@ -64,7 +64,7 @@ function App() {
       <div className="image-list">
         {images.map((image, index) => (
           <div key={index} className="image-item">
-            <img src={`http://localhost:5000/myimg/${image}`} alt={image} height="100" />
+            <img src={`/api/myimg/${image}`} alt={image} height="100" />
             <button onClick={() => handleDelete(image)}>Delete</button>
           </div>
         ))}
