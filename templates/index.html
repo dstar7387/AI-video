@@ -62,11 +62,29 @@
                             </label>
                         </div>
                     </div>
-                    <button type="submit" class="btn-primary generate-btn">Generate Slideshow</button>
+                    <button type="submit" class="btn-primary generate-btn" id="generateBtn">Generate Slideshow</button>
                 </form>
             </div>
         </div>
     </div>
+
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <div class="loading-text">Generating Slideshow...</div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.audio-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            this.submit();
+        });
+    </script>
 
     <footer class="footer">
         <p class="footer-text">
