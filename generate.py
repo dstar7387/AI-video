@@ -7,8 +7,8 @@ def generatex():
     image_directory = 'myimg'
     # Input and output settings for image video generation
     
-    image_display_duration = 3000  # milliseconds (3 seconds)
-    transition_duration = 50  # Frames (0.5 seconds)
+    image_display_duration = 5000  # milliseconds (5 seconds)
+    transition_duration = 90  # Frames (2 seconds)
     frame_rate = 45
     video_width = 640
     video_height = 480
@@ -39,38 +39,25 @@ def generatex():
         image1 = cv2.resize(image1, (video_width, video_height))
         image2 = cv2.resize(image2, (video_width, video_height))
         
-        # Random zoom effect (zoom in or out)
-        zoom_direction = np.random.choice(['in', 'out'])
-        zoom_factor_start = 1.0
-        zoom_factor_end = 1.3 if zoom_direction == 'in' else 0.8
-        
+        # Pan effect (left to right or right to left)
+        pan_direction = np.random.choice(['left_to_right', 'right_to_left'])
         frames_per_image = int(image_display_duration * frame_rate / 1000)
+        
+        # Create larger image for panning
+        padding = int(video_width * 0.2)  # 20% padding for smooth pan
+        padded_width = video_width + 2 * padding
+        padded_image = cv2.resize(image1, (padded_width, video_height))
+        
         for frame in range(frames_per_image):
-            # Calculate current zoom factor
             progress = frame / frames_per_image
-            current_zoom = zoom_factor_start + (zoom_factor_end - zoom_factor_start) * progress
-            
-            # Calculate dimensions for zoomed image
-            h, w = image1.shape[:2]
-            zh = int(h * current_zoom)
-            zw = int(w * current_zoom)
-            
-            # Calculate crop coordinates to keep center
-            top = max(0, (zh - h) // 2)
-            left = max(0, (zw - w) // 2)
-            
-            # Resize and crop
-            zoomed = cv2.resize(image1, (zw, zh))
-            if current_zoom > 1:
-                zoomed = zoomed[top:top+h, left:left+w]
+            if pan_direction == 'left_to_right':
+                offset = int(padding * (1 - progress))
             else:
-                new_img = np.zeros_like(image1)
-                pad_top = (h - zh) // 2
-                pad_left = (w - zw) // 2
-                new_img[pad_top:pad_top+zh, pad_left:pad_left+zw] = zoomed
-                zoomed = new_img
-            
-            output_video.write(np.uint8(zoomed))
+                offset = int(padding * progress)
+                
+            # Crop the current view
+            current_view = padded_image[:, offset:offset + video_width]
+            output_video.write(np.uint8(current_view))
         
         for frame in range(transition_duration + 1):
             alpha = frame / transition_duration
