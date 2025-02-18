@@ -17,7 +17,11 @@
         <div class="upload-section">
             <div class="card">
                 <h2>Generate Slideshow</h2>
-                <form method="POST" action="/generate" class="generate-form">
+                <form method="POST" action="/generate" class="generate-form" enctype="multipart/form-data">
+                    <div class="file-input-container">
+                        <input type="file" name="images" multiple accept="image/*" id="imageInput" required>
+                        <input type="file" name="audio" accept="audio/*" id="audioInput">
+                    </div>
                     <button type="submit" class="btn-primary generate-btn" id="generateBtn">Generate Slideshow</button>
                 </form>
             </div>

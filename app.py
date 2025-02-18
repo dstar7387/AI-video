@@ -30,12 +30,22 @@ def auto_upload_files():
 def generate():
     auto_upload_files()
     
-    # Check if we have images in myimg folder
-    images = [f for f in os.listdir(app.config['UPLOAD_FOLDER_img']) 
-             if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
-    
+    # Handle image uploads
+    images = request.files.getlist('images')
     if not images:
-        return render_template('index.html', message='No images found in myimg folder')
+        return render_template('index.html', message='No images uploaded')
+    
+    # Save uploaded images
+    for image in images:
+        if image and image.filename:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER_img'], filename))
+    
+    # Handle audio upload
+    audio = request.files.get('audio')
+    if audio and audio.filename:
+        filename = secure_filename(audio.filename)
+        audio.save(os.path.join(app.config['UPLOAD_FOLDER_speech'], filename))
     
     # Generate the video
     output_path = generatex()
