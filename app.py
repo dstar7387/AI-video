@@ -39,22 +39,22 @@ def generate():
     if not uploaded_images:
         return render_template('index.html', message='No images uploaded')
 
-    # # Clear existing images
-    # for file in os.listdir(app.config['UPLOAD_FOLDER_img']):
-    #     if file.lower().endswith(('.png', '.jpg', '.jpeg')):
-    #         os.remove(os.path.join(app.config['UPLOAD_FOLDER_img'], file))
+    # Clear existing images
+    for file in os.listdir(app.config['UPLOAD_FOLDER_img']):
+        if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER_img'], file))
 
-    # # Save new images
-    # for image in uploaded_images:
-    #     if image and image.filename:
-    #         filename = secure_filename(image.filename)
-    #         image.save(os.path.join(app.config['UPLOAD_FOLDER_img'], filename))
+    # Save new images
+    for image in uploaded_images:
+        if image and image.filename:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER_img'], filename))
 
-    # # Handle audio upload
-    # audio = request.files.get('audio')
-    # if audio and audio.filename:
-    #     filename = secure_filename(audio.filename)
-    #     audio.save(os.path.join(app.config['UPLOAD_FOLDER_speech'], filename))
+    # Handle audio upload
+    audio = request.files.get('audio')
+    if audio and audio.filename:
+        filename = secure_filename(audio.filename)
+        audio.save(os.path.join(app.config['UPLOAD_FOLDER_speech'], filename))
 
     # Generate the video
     try:
@@ -64,9 +64,7 @@ def generate():
         print(f"Error generating video: {str(e)}")
         return render_template('index.html', message='Error generating video')
 
-    # Generate the video
-    output_path = generatex()
-    return render_template('result.html', output_path=output_path)
+    
 
 
 if __name__ == '__main__':
