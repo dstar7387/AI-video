@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,72 +16,8 @@
 
         <div class="upload-section">
             <div class="card">
-                <h2>Upload Images</h2>
-                <form action="/upload" method="POST" enctype="multipart/form-data" class="upload-form" id="uploadForm">
-                    <div class="file-input-container">
-                        <input type="file" name="file" multiple id="image-input" class="file-input">
-                        <label for="image-input" class="file-label">
-                            <span class="upload-icon">📸</span>
-                            <span>Choose Images</span>
-                        </label>
-                        <div id="selectedFiles" class="selected-files"></div>
-                    </div>
-                    <button type="submit" class="btn-primary">Upload Images</button>
-                </form>
-                <div id="imageUploadOverlay" class="loading-overlay hidden">
-                    <div class="loading-content">
-                        <div class="loading-spinner"></div>
-                        <div class="loading-bar-container">
-                            <div class="loading-bar"></div>
-                        </div>
-                        <div class="loading-text">Uploading Images...</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="preview-section">
-                <h3>Uploaded Images</h3>
-                <div class="image-grid">
-                    {% for image in images %}
-                        <div class="image-card">
-                            <img src="{{ url_for('uploaded_file', filename=image) }}" alt="{{ image }}">
-                            <a href="/delete/{{ image }}" class="delete-btn" title="Delete Image">×</a>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Add Audio</h2>
-                <form method="POST" enctype="multipart/form-data" action="/generate" class="audio-form">
-                    <div class="audio-inputs">
-                        <div class="file-input-container">
-                            <input type="file" name="speech" id="speech" accept=".mp3" required class="file-input">
-                            <label for="speech" class="file-label">
-                                <span class="upload-icon">🎤</span>
-                                <span>Choose Speech</span>
-                            </label>
-                        </div>
-
-                        <div class="file-input-container">
-                            <input type="file" name="background" id="background" accept=".mp3" required class="file-input">
-                            <label for="background" class="file-label">
-                                <span class="upload-icon">🎵</span>
-                                <span>Choose Background Music</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="file-preview">
-                        <div id="imagePreview">
-                            <h3>Selected Images:</h3>
-                            <div class="preview-grid"></div>
-                        </div>
-                        <div id="audioPreview">
-                            <h3>Selected Audio Files:</h3>
-                            <p id="speechInfo">Speech: No file selected</p>
-                            <p id="backgroundInfo">Background Music: No file selected</p>
-                        </div>
-                    </div>
+                <h2>Generate Slideshow</h2>
+                <form method="POST" action="/generate" class="generate-form">
                     <button type="submit" class="btn-primary generate-btn" id="generateBtn">Generate Slideshow</button>
                 </form>
             </div>
@@ -100,72 +35,10 @@
     </div>
 
     <script>
-        // Handle image selection and upload
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            document.getElementById('imageUploadOverlay').classList.remove('hidden');
-            this.submit();
-        });
-
-        // Display selected file names
-        document.getElementById('image-input').addEventListener('change', function(e) {
-            const selectedFiles = document.getElementById('selectedFiles');
-            selectedFiles.innerHTML = '';
-            
-            if (this.files.length > 0) {
-                const fileList = document.createElement('div');
-                fileList.className = 'file-list';
-                
-                for (let file of this.files) {
-                    const fileTag = document.createElement('span');
-                    fileTag.className = 'file-tag';
-                    fileTag.textContent = file.name;
-                    fileList.appendChild(fileTag);
-                }
-                
-                selectedFiles.appendChild(fileList);
-            }
-        });
-
-        // Handle image preview
-        document.getElementById('image-input').addEventListener('change', function(e) {
-            const previewGrid = document.querySelector('.preview-grid');
-            previewGrid.innerHTML = '';
-            
-            for (let file of this.files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const div = document.createElement('div');
-                    div.className = 'preview-item';
-                    div.innerHTML = `
-                        <img src="${e.target.result}" alt="${file.name}">
-                        <p>${file.name}</p>
-                    `;
-                    previewGrid.appendChild(div);
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Handle audio preview
-        document.getElementById('speech').addEventListener('change', function(e) {
-            const info = document.getElementById('speechInfo');
-            if (this.files[0]) {
-                info.textContent = `Speech: ${this.files[0].name} (${(this.files[0].size / 1024 / 1024).toFixed(2)} MB)`;
-            }
-        });
-
-        document.getElementById('background').addEventListener('change', function(e) {
-            const info = document.getElementById('backgroundInfo');
-            if (this.files[0]) {
-                info.textContent = `Background Music: ${this.files[0].name} (${(this.files[0].size / 1024 / 1024).toFixed(2)} MB)`;
-            }
-        });
-
-        document.querySelector('.audio-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        document.querySelector('.generate-form').addEventListener('submit', function(e) {
+            e.preventDefault(); //added to prevent default form submission behavior
             document.getElementById('loadingOverlay').classList.remove('hidden');
-            this.submit();
+            this.submit(); //submit the form after preventing default
         });
     </script>
 
