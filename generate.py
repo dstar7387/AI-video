@@ -39,8 +39,38 @@ def generatex():
         image1 = cv2.resize(image1, (video_width, video_height))
         image2 = cv2.resize(image2, (video_width, video_height))
         
-        for _ in range(int(image_display_duration * frame_rate / 1000)):
-            output_video.write(np.uint8(image1))
+        # Random zoom effect (zoom in or out)
+        zoom_direction = np.random.choice(['in', 'out'])
+        zoom_factor_start = 1.0
+        zoom_factor_end = 1.3 if zoom_direction == 'in' else 0.8
+        
+        frames_per_image = int(image_display_duration * frame_rate / 1000)
+        for frame in range(frames_per_image):
+            # Calculate current zoom factor
+            progress = frame / frames_per_image
+            current_zoom = zoom_factor_start + (zoom_factor_end - zoom_factor_start) * progress
+            
+            # Calculate dimensions for zoomed image
+            h, w = image1.shape[:2]
+            zh = int(h * current_zoom)
+            zw = int(w * current_zoom)
+            
+            # Calculate crop coordinates to keep center
+            top = max(0, (zh - h) // 2)
+            left = max(0, (zw - w) // 2)
+            
+            # Resize and crop
+            zoomed = cv2.resize(image1, (zw, zh))
+            if current_zoom > 1:
+                zoomed = zoomed[top:top+h, left:left+w]
+            else:
+                new_img = np.zeros_like(image1)
+                pad_top = (h - zh) // 2
+                pad_left = (w - zw) // 2
+                new_img[pad_top:pad_top+zh, pad_left:pad_left+zw] = zoomed
+                zoomed = new_img
+            
+            output_video.write(np.uint8(zoomed))
         
         for frame in range(transition_duration + 1):
             alpha = frame / transition_duration
