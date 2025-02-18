@@ -6,8 +6,8 @@ from generate import generatex
 import datetime
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
-CORS(app)
+app = Flask(__name__, static_folder='frontend/dist')
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.config['UPLOAD_FOLDER_img'] = 'myimg'
 app.config['UPLOAD_FOLDER_speech'] = 'myspeech'
@@ -64,6 +64,13 @@ def generate():
             return jsonify({'output_path': output_path})
         else:
             return jsonify({'error': 'Please upload both MP3 files'}), 400
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

@@ -1,4 +1,3 @@
 
 #!/bin/bash
-cd frontend && npm run dev & 
-python3 app.py
+cd frontend && npm install && npm run build && cd .. && python3 app.py
