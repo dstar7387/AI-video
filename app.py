@@ -34,37 +34,26 @@ def generate():
     # Ensure directories exist
     auto_upload_files()
 
-    # Handle image uploads
-    uploaded_images = request.files.getlist('images')
-    if not uploaded_images:
-        return render_template('index.html', message='No images uploaded')
+    # Check for existing images
+    image_files = [f for f in os.listdir(app.config['UPLOAD_FOLDER_img']) 
+                  if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    
+    if not image_files:
+        return render_template('index.html', message='No images found in myimg folder')
 
-    # # Clear existing images
-    # for file in os.listdir(app.config['UPLOAD_FOLDER_img']):
-    #     if file.lower().endswith(('.png', '.jpg', '.jpeg')):
-    #         os.remove(os.path.join(app.config['UPLOAD_FOLDER_img'], file))
+    # Check for existing audio
+    audio_files = [f for f in os.listdir(app.config['UPLOAD_FOLDER_speech']) 
+                  if f.lower().endswith('.mp3')]
+    
+    if not audio_files:
+        print("No audio file found in myspeech folder")
 
-    # # Save new images
-    # for image in uploaded_images:
-    #     if image and image.filename:
-    #         filename = secure_filename(image.filename)
-    #         image.save(os.path.join(app.config['UPLOAD_FOLDER_img'], filename))
-
-    # # Handle audio upload
-    # audio = request.files.get('audio')
-    # if audio and audio.filename:
-    #     filename = secure_filename(audio.filename)
-    #     audio.save(os.path.join(app.config['UPLOAD_FOLDER_speech'], filename))
-
-    # Handle image uploads
-    for file in os.listdir(app.config['UPLOAD_FOLDER_img']):
-        if file.lower().endswith(('.png', '.jpg', '.jpeg')):
-            print(f"Keeping image: {file}")
-            
-    # Handle audio in myspeech folder
-    for file in os.listdir(app.config['UPLOAD_FOLDER_speech']):
-        if file.lower().endswith('.mp3'):
-            print(f"Keeping audio: {file}")
+    # Log files being used
+    for img in image_files:
+        print(f"Using image: {img}")
+    
+    if audio_files:
+        print(f"Using audio: {audio_files[0]}")
 
     # Generate the video
     try:
