@@ -1,41 +1,77 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Images to Slideshow Generator</title>
+    <title>Slideshow Generator Pro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Images to Slideshow Video Generator</h1>
-  <h2>Upload Images</h2>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" multiple>
-        <input type="submit" value="Upload">
-    </form>
-    
-   
-    <ul>
-        {% for image in images %}
-            <img src="{{ url_for('uploaded_file', filename=image) }}" alt="{{ image }}" height="100">
-            <a href="/delete/{{ image }}">Delete</a>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <header>
+            <h1>Slideshow Generator Pro</h1>
+            <p class="subtitle">Transform your images into beautiful slideshows</p>
+        </header>
 
-    <h2>Upload MP3 Files</h2>
-    <form method="POST" enctype="multipart/form-data" action="/generate">
-        <label for="speech">Upload Speech MP3:</label>
-        <input type="file" name="speech" id="speech" accept=".mp3" required><br>
+        <div class="upload-section">
+            <div class="card">
+                <h2>Upload Images</h2>
+                <form action="/upload" method="POST" enctype="multipart/form-data" class="upload-form">
+                    <div class="file-input-container">
+                        <input type="file" name="file" multiple id="image-input" class="file-input">
+                        <label for="image-input" class="file-label">
+                            <span class="upload-icon">📸</span>
+                            <span>Choose Images</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-primary">Upload Images</button>
+                </form>
+            </div>
 
-        <label for="background">Upload Background MP3:</label>
-        <input type="file" name="background" id="background" accept=".mp3" required><br>
+            <div class="preview-section">
+                <h3>Uploaded Images</h3>
+                <div class="image-grid">
+                    {% for image in images %}
+                        <div class="image-card">
+                            <img src="{{ url_for('uploaded_file', filename=image) }}" alt="{{ image }}">
+                            <a href="/delete/{{ image }}" class="delete-btn" title="Delete Image">×</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
 
-        <input type="submit" value="Generate Slideshow">
-    </form>
+            <div class="card">
+                <h2>Add Audio</h2>
+                <form method="POST" enctype="multipart/form-data" action="/generate" class="audio-form">
+                    <div class="audio-inputs">
+                        <div class="file-input-container">
+                            <input type="file" name="speech" id="speech" accept=".mp3" required class="file-input">
+                            <label for="speech" class="file-label">
+                                <span class="upload-icon">🎤</span>
+                                <span>Choose Speech</span>
+                            </label>
+                        </div>
+
+                        <div class="file-input-container">
+                            <input type="file" name="background" id="background" accept=".mp3" required class="file-input">
+                            <label for="background" class="file-label">
+                                <span class="upload-icon">🎵</span>
+                                <span>Choose Background Music</span>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary generate-btn">Generate Slideshow</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <p class="footer-text">
-            © Created by <a href="https://about.me/mohaimenulislamshawon/" target="_blank" class="footer-link">Shawon</a>
+            Created with ❤️ by <a href="https://about.me/mohaimenulislamshawon/" target="_blank" class="footer-link">Shawon</a>
         </p>
-</footer>
+    </footer>
 </body>
 </html>

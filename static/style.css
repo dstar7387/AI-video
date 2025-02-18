@@ -1,109 +1,198 @@
-/* Reset some default styles */
-body, h2, form {
+
+/* Modern CSS Reset */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* Apply a background color and center content */
 body {
-    background-color: #f2f2f2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
-}
-
-/* Style the form container */
-form {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    padding: 40px;
-    margin: 20px;
-    text-align: center;
-    max-width: 400px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Style file input and submit button */
-input[type="file"] {
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 100%;
-}
-
-input[type="submit"] {
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-input[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-/* Style the image container */
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-img {
-    margin: 10px;
-    border: 1px solid #ccc;
-}
-
-a {
-    text-decoration: none;
-    color: #ff0000;
-    margin-left: 5px;
-}
-
-/* Style the h2 headings */
-h2 {
-    margin-top: 20px;
+    padding: 2rem;
     color: #333;
 }
-/* Style the download button container */
-.download-button {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 10px 20px;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
-    max-width: 200px;
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.download-button:hover {
-    background-color: #0056b3;
-}
-/* Footer styles */
-.footer {
-    margin-top: 20px;
+header {
     text-align: center;
+    margin-bottom: 3rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #2d3436;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #636e72;
+    font-size: 1.1rem;
+}
+
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+h2 {
+    color: #2d3436;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.upload-form, .audio-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.file-input-container {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem;
+    border: 2px dashed #74b9ff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-label:hover {
+    border-color: #0984e3;
+    background: #f1f9ff;
+}
+
+.upload-icon {
+    font-size: 1.5rem;
+}
+
+.btn-primary {
+    background: #0984e3;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #0870c2;
+    transform: translateY(-2px);
+}
+
+.preview-section {
+    margin: 2rem 0;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.image-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #ff6b6b;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #ff6b6b;
+    color: white;
+}
+
+.generate-btn {
+    background: #00b894;
+    margin-top: 1rem;
+}
+
+.generate-btn:hover {
+    background: #00a28a;
+}
+
+.audio-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1rem;
 }
 
 .footer-text {
-    font-size: 14px;
-    color: #777;
+    color: #636e72;
 }
 
 .footer-link {
-    color: #007bff;
+    color: #0984e3;
     text-decoration: none;
+    font-weight: 500;
 }
 
 .footer-link:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .audio-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    body {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
 }
