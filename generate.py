@@ -108,26 +108,12 @@ def generatex():
     final_clip = video_clip.set_audio(final_audio)
     final_clip.write_videofile(output_path, audio_codec='aac')
     os.remove("memory.mp4")
+    # Keep the files for future use
     if background_audio_path:
-        print(background_audio_path)
-        os.remove(background_audio_path)
-
+        print(f"Keeping background audio: {background_audio_path}")
     if speech_audio_path:
-        print(speech_audio_path)
-        os.remove(speech_audio_path)
-    # Check if the directory exists
-    if os.path.exists(image_directory) and os.path.isdir(image_directory):
-        # List all files in the directory
-        files_in_directory = os.listdir(image_directory)
-        
-        # Check if there are any files in the directory
-        if files_in_directory:
-            # Iterate over the files and remove them
-            for file_name in files_in_directory:
-                file_path = os.path.join(image_directory, file_name)
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
-            print("All files in the 'myimg' folder have been deleted.")
+        print(f"Keeping speech audio: {speech_audio_path}")
+    print("Keeping all images in myimg folder for future use")
 
     #need to delete all images from myimg
 

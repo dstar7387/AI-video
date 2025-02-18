@@ -56,6 +56,16 @@ def generate():
     #     filename = secure_filename(audio.filename)
     #     audio.save(os.path.join(app.config['UPLOAD_FOLDER_speech'], filename))
 
+    # Handle image uploads
+    for file in os.listdir(app.config['UPLOAD_FOLDER_img']):
+        if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+            print(f"Keeping image: {file}")
+            
+    # Handle audio in myspeech folder
+    for file in os.listdir(app.config['UPLOAD_FOLDER_speech']):
+        if file.lower().endswith('.mp3'):
+            print(f"Keeping audio: {file}")
+
     # Generate the video
     try:
         output_path = generatex()
