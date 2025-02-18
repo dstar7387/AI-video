@@ -18,16 +18,26 @@
         <div class="upload-section">
             <div class="card">
                 <h2>Upload Images</h2>
-                <form action="/upload" method="POST" enctype="multipart/form-data" class="upload-form">
+                <form action="/upload" method="POST" enctype="multipart/form-data" class="upload-form" id="uploadForm">
                     <div class="file-input-container">
                         <input type="file" name="file" multiple id="image-input" class="file-input">
                         <label for="image-input" class="file-label">
                             <span class="upload-icon">📸</span>
                             <span>Choose Images</span>
                         </label>
+                        <div id="selectedFiles" class="selected-files"></div>
                     </div>
                     <button type="submit" class="btn-primary">Upload Images</button>
                 </form>
+                <div id="imageUploadOverlay" class="loading-overlay hidden">
+                    <div class="loading-content">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-bar-container">
+                            <div class="loading-bar"></div>
+                        </div>
+                        <div class="loading-text">Uploading Images...</div>
+                    </div>
+                </div>
             </div>
 
             <div class="preview-section">
@@ -90,6 +100,33 @@
     </div>
 
     <script>
+        // Handle image selection and upload
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('imageUploadOverlay').classList.remove('hidden');
+            this.submit();
+        });
+
+        // Display selected file names
+        document.getElementById('image-input').addEventListener('change', function(e) {
+            const selectedFiles = document.getElementById('selectedFiles');
+            selectedFiles.innerHTML = '';
+            
+            if (this.files.length > 0) {
+                const fileList = document.createElement('div');
+                fileList.className = 'file-list';
+                
+                for (let file of this.files) {
+                    const fileTag = document.createElement('span');
+                    fileTag.className = 'file-tag';
+                    fileTag.textContent = file.name;
+                    fileList.appendChild(fileTag);
+                }
+                
+                selectedFiles.appendChild(fileList);
+            }
+        });
+
         // Handle image preview
         document.getElementById('image-input').addEventListener('change', function(e) {
             const previewGrid = document.querySelector('.preview-grid');
